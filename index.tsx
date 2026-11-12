@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Tracker Pro uncaught error:", error, errorInfo);
+    console.error("PocketTracker Pro uncaught error:", error, errorInfo);
   }
 
   handleReset = () => {
@@ -40,7 +40,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             </div>
             <h2 className="text-xl font-bold text-slate-900">Application Notice</h2>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Tracker Pro encountered an error loading stored records:
+              PocketTracker Pro encountered an error loading stored records:
             </p>
             <div className="p-3 bg-slate-100 rounded-xl text-left text-xs font-mono text-rose-700 max-h-32 overflow-y-auto">
               {this.state.error?.message || String(this.state.error)}

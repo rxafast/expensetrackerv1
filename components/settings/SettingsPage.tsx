@@ -53,7 +53,7 @@ const SettingsPage: React.FC = () => {
     const backupData = {
       version: '3.0',
       exportedAt: new Date().toISOString(),
-      appName: 'Tracker Pro',
+      appName: 'PocketTracker Pro',
       currency: 'PKR',
       userEmail: currentUser?.email || 'local',
       transactions,

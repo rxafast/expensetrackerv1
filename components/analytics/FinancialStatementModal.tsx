@@ -66,7 +66,7 @@ const FinancialStatementModal: React.FC<FinancialStatementModalProps> = ({ isOpe
                 <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
                   P
                 </div>
-                <h1 className="text-xl font-black tracking-tight text-slate-900">Tracker Pro Statement</h1>
+                <h1 className="text-xl font-black tracking-tight text-slate-900">PocketTracker Pro Statement</h1>
               </div>
               <p className="text-xs text-slate-500 mt-1">Personal Cashflow & Expense Audit</p>
             </div>

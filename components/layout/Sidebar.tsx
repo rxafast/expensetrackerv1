@@ -97,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, closeSidebar, o
           <div>
             <div className="flex items-center space-x-1.5">
               <h1 className={`text-lg font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Tracker Pro
+                PocketTracker Pro
               </h1>
               <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
                 PRO

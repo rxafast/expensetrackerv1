@@ -80,7 +80,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
             {currentUser.displayName ? currentUser.displayName[0].toUpperCase() : currentUser.email?.[0].toUpperCase() || 'U'}
           </div>
           <div>
-            <h3 className="font-bold text-slate-900 text-lg">{currentUser.displayName || 'Tracker Pro User'}</h3>
+            <h3 className="font-bold text-slate-900 text-lg">{currentUser.displayName || 'PocketTracker Pro User'}</h3>
             <p className="text-sm text-slate-500">{currentUser.email}</p>
             <div className="inline-flex items-center space-x-1 mt-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
               <ShieldCheck size={14} />
@@ -114,8 +114,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
       isOpen={isOpen}
       onClose={onClose}
       title={
-        mode === 'login' ? 'Sign In to Tracker Pro' :
-        mode === 'register' ? 'Create Tracker Pro Account' :
+        mode === 'login' ? 'Sign In to PocketTracker Pro' :
+        mode === 'register' ? 'Create PocketTracker Pro Account' :
         'Reset Account Password'
       }
     >
