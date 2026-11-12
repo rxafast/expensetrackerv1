@@ -82,7 +82,7 @@ const AppContent: React.FC = () => {
       </div>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden pb-16 md:pb-0">
         <Header 
           toggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}
@@ -94,6 +94,51 @@ const AppContent: React.FC = () => {
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
           {renderView()}
         </main>
+      </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <div className={`fixed bottom-0 inset-x-0 z-30 md:hidden border-t flex items-center justify-around h-16 px-2 shadow-lg backdrop-blur-md ${
+        isDark ? 'bg-slate-900/90 border-slate-800 text-slate-300' : 'bg-white/90 border-slate-200 text-slate-600'
+      }`}>
+        <button
+          onClick={() => setView('dashboard')}
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors ${
+            view === 'dashboard' ? 'text-emerald-600 font-bold' : 'hover:text-emerald-500'
+          }`}
+        >
+          <span className="text-xs">Home</span>
+        </button>
+        <button
+          onClick={() => setView('transactions')}
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors ${
+            view === 'transactions' ? 'text-emerald-600 font-bold' : 'hover:text-emerald-500'
+          }`}
+        >
+          <span className="text-xs">Txns</span>
+        </button>
+        <button
+          onClick={() => setGlobalAddOpen(true)}
+          className="flex items-center justify-center -mt-5 w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-600/30 active:scale-95 transition-transform"
+          title="Add Transaction"
+        >
+          <span className="text-2xl font-light">+</span>
+        </button>
+        <button
+          onClick={() => setView('accounts')}
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors ${
+            view === 'accounts' ? 'text-emerald-600 font-bold' : 'hover:text-emerald-500'
+          }`}
+        >
+          <span className="text-xs">Accounts</span>
+        </button>
+        <button
+          onClick={() => setView('ai-assistant')}
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors ${
+            view === 'ai-assistant' ? 'text-emerald-600 font-bold' : 'hover:text-emerald-500'
+          }`}
+        >
+          <span className="text-xs">AI Advisor</span>
+        </button>
       </div>
 
       {/* Global Quick Add Transaction Modal */}
