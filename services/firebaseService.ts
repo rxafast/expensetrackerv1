@@ -43,16 +43,21 @@ export const initFirebase = (config: FirebaseConfig = USER_FIREBASE_CONFIG): {
   db: Firestore 
 } => {
   try {
+    console.log('Initializing Firebase with config:', config.projectId);
     const existingApps = getApps();
     if (existingApps.length > 0) {
+      console.log('Using existing Firebase app');
       firebaseApp = existingApps[0];
     } else {
+      console.log('Creating new Firebase app');
       firebaseApp = initializeApp(config);
     }
 
     authInstance = getAuth(firebaseApp);
     databaseInstance = getDatabase(firebaseApp, config.databaseURL);
     firestoreInstance = getFirestore(firebaseApp);
+    
+    console.log('Firebase initialized successfully');
 
     return { 
       app: firebaseApp, 

@@ -116,16 +116,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // Auth listener
   useEffect(() => {
+    console.log('Setting up auth listener...');
     const unsubscribe = subscribeToAuth(async (user) => {
+      console.log('Auth state changed, user:', user?.email);
       setCurrentUser(user);
       setIsAuthLoading(false);
 
       if (user) {
         // Automatically fetch data from cloud on login
+        console.log('User signed in, fetching data...');
         setIsSyncing(true);
         setSyncStatus({ message: `Loading data for ${user.email}...`, type: 'idle' });
         try {
           const res = await fetchUserDataFromCloud(user.uid);
+          console.log('Fetch result:', res);
           if (res.success && res.data) {
             if (res.data.transactions && res.data.transactions.length > 0) {
               setTransactions(res.data.transactions);
