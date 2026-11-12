@@ -84,24 +84,24 @@ const SettingsPage: React.FC = () => {
       try {
         const content = e.target?.result as string;
         const parsed = JSON.parse(content);
-        if (!parsed.transactions && !parsed.accounts) {
-          throw new Error('Invalid JSON backup file format.');
-        }
+        
+        // Helper to ensure data is an array
+        const ensureArray = (val: any) => (Array.isArray(val) ? val : []);
 
         if (parsed.transactions) {
-          localStorage.setItem('fintrack_transactions_v3', JSON.stringify(parsed.transactions));
+          localStorage.setItem('fintrack_transactions_v3', JSON.stringify(ensureArray(parsed.transactions)));
         }
         if (parsed.accounts) {
-          localStorage.setItem('fintrack_accounts_v3', JSON.stringify(parsed.accounts));
+          localStorage.setItem('fintrack_accounts_v3', JSON.stringify(ensureArray(parsed.accounts)));
         }
         if (parsed.categories) {
-          localStorage.setItem('fintrack_categories_v3', JSON.stringify(parsed.categories));
+          localStorage.setItem('fintrack_categories_v3', JSON.stringify(ensureArray(parsed.categories)));
         }
         if (parsed.budgets) {
-          localStorage.setItem('fintrack_budgets_v3', JSON.stringify(parsed.budgets));
+          localStorage.setItem('fintrack_budgets_v3', JSON.stringify(ensureArray(parsed.budgets)));
         }
         if (parsed.savingsGoals) {
-          localStorage.setItem('fintrack_goals_v3', JSON.stringify(parsed.savingsGoals));
+          localStorage.setItem('fintrack_goals_v3', JSON.stringify(ensureArray(parsed.savingsGoals)));
         }
 
         showNotice('Backup restored! Reloading application...');
