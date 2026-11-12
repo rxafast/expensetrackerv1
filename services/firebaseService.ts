@@ -192,14 +192,32 @@ const mapToArray = (val: any): any[] => {
   return [];
 };
 
+// Helper to sanitize objects for Firebase (removes undefined values)
+const sanitizeForFirebase = (obj: any): any => {
+  if (obj === undefined) return null;
+  if (obj === null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeForFirebase);
+  }
+  const cleaned: Record<string, any> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) {
+      cleaned[k] = sanitizeForFirebase(v);
+    }
+  }
+  return cleaned;
+};
+
 // Save user data to both Firebase Realtime Database and Firestore
 export const saveUserDataToCloud = async (
   userId: string,
-  data: SyncDataPayload
+  rawData: SyncDataPayload
 ): Promise<{ success: boolean; message: string; count: number }> => {
   let rtdbSuccess = false;
   let firestoreSuccess = false;
   let errors: string[] = [];
+
+  const data = sanitizeForFirebase(rawData);
 
   const totalCount = data.transactions.length + data.accounts.length + data.budgets.length + data.savingsGoals.length;
 
