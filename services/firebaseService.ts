@@ -291,13 +291,22 @@ export const fetchUserDataFromCloud = async (
     // Path B: root /transactions, /expenses, /accounts, /categories, /budgets
     // Path C: /data
     const [userSnap, rootTxSnap, rootExpenseSnap, rootAccSnap, rootCatSnap, rootBudgetSnap] = await Promise.all([
-      get(child(dbRef, `users/${userId}`)).catch(() => null),
-      get(child(dbRef, 'transactions')).catch(() => null),
-      get(child(dbRef, 'expenses')).catch(() => null),
-      get(child(dbRef, 'accounts')).catch(() => null),
-      get(child(dbRef, 'categories')).catch(() => null),
-      get(child(dbRef, 'budgets')).catch(() => null),
+      get(child(dbRef, `users/${userId}`)).catch((e) => { console.log('RTDB fetch error users/', e); return null; }),
+      get(child(dbRef, 'transactions')).catch((e) => { console.log('RTDB fetch error transactions/', e); return null; }),
+      get(child(dbRef, 'expenses')).catch((e) => { console.log('RTDB fetch error expenses/', e); return null; }),
+      get(child(dbRef, 'accounts')).catch((e) => { console.log('RTDB fetch error accounts/', e); return null; }),
+      get(child(dbRef, 'categories')).catch((e) => { console.log('RTDB fetch error categories/', e); return null; }),
+      get(child(dbRef, 'budgets')).catch((e) => { console.log('RTDB fetch error budgets/', e); return null; }),
     ]);
+
+    console.log('RTDB Snapshots:', {
+        userSnap: userSnap?.exists(),
+        rootTxSnap: rootTxSnap?.exists(),
+        rootExpenseSnap: rootExpenseSnap?.exists(),
+        rootAccSnap: rootAccSnap?.exists(),
+        rootCatSnap: rootCatSnap?.exists(),
+        rootBudgetSnap: rootBudgetSnap?.exists(),
+    });
 
     if (userSnap && userSnap.exists()) {
       const val = userSnap.val();
