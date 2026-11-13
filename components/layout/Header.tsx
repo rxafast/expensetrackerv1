@@ -11,7 +11,9 @@ import {
   CheckCircle,
   LogIn,
   User,
-  ShieldCheck
+  ShieldCheck,
+  Sun,
+  Moon
 } from 'lucide-react';
 import GlobalSearch from '../search/GlobalSearch';
 import { View } from '../../App';
@@ -33,8 +35,10 @@ const Header: React.FC<HeaderProps> = ({
   onOpenAddModal,
   onOpenTransferModal
 }) => {
-  const { settings, toggleHideAmounts, syncToCloud, isSyncing, syncStatus, currentUser } = useAppContext();
+  const { settings, updateSettings, toggleHideAmounts, syncToCloud, isSyncing, syncStatus, currentUser } = useAppContext();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+
+  const isDark = settings.theme === 'dark';
 
   return (
     <header className="flex-shrink-0 bg-white border-b border-slate-200 sticky top-0 z-20">
@@ -56,6 +60,15 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Right Side: Quick Action buttons */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={() => updateSettings({ theme: isDark ? 'light' : 'dark' })}
+            className="p-2 rounded-lg text-slate-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all"
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDark ? <Sun size={15} className="text-amber-500" /> : <Moon size={15} className="text-slate-700" />}
+          </button>
+
           {/* Privacy Toggle */}
           <button
             onClick={toggleHideAmounts}
