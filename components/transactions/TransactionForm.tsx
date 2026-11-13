@@ -187,30 +187,32 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
     <>
       <form onSubmit={handleSubmit} className="space-y-4 max-h-[80vh] overflow-y-auto px-1 py-1">
         {/* Smart Voice & Receipt Capture Banner */}
-        <div className="p-3 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 rounded-2xl border border-emerald-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-          <div className="text-xs font-semibold text-emerald-900 flex items-center space-x-1.5">
-            <Sparkles size={16} className="text-emerald-600 animate-pulse" />
-            <span>Smart Add: Speak or Scan Receipt</span>
+        <div className="p-3.5 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-cyan-500/10 rounded-2xl border border-emerald-500/20 shadow-xs flex flex-col gap-2.5">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-bold text-emerald-900 dark:text-emerald-300 flex items-center space-x-1.5">
+              <Sparkles size={15} className="text-emerald-600 animate-pulse" />
+              <span>Smart AI Quick Add</span>
+            </div>
+            <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full">FAST</span>
           </div>
-          <div className="flex items-center space-x-2 w-full sm:w-auto">
+          <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={startVoiceInput}
               disabled={isListening}
-              className={`flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+              className={`flex items-center justify-center space-x-1.5 py-2 px-2.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
                 isListening 
                   ? 'bg-rose-600 text-white animate-pulse' 
-                  : 'bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200'
+                  : 'bg-white dark:bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
               }`}
-              title="Speak to record transaction (e.g. Spent 1200 on groceries)"
             >
-              {isListening ? <MicOff size={14} /> : <Mic size={14} />}
-              <span>{isListening ? "Listening..." : "Voice Mic"}</span>
+              <Mic size={14} className="text-emerald-600" />
+              <span className="truncate">{isListening ? "Listening..." : "Voice"}</span>
             </button>
 
-            <label className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 cursor-pointer shadow-xs transition-all">
-              <Camera size={14} />
-              <span>Capture Photo</span>
+            <label className="flex items-center justify-center space-x-1.5 py-2 px-2.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs transition-all">
+              <Camera size={14} className="text-emerald-600" />
+              <span className="truncate">Camera</span>
               <input 
                 type="file" 
                 accept="image/*" 
@@ -220,9 +222,9 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
               />
             </label>
 
-            <label className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 cursor-pointer shadow-xs transition-all">
-              <Upload size={14} />
-              <span>Upload</span>
+            <label className="flex items-center justify-center space-x-1.5 py-2 px-2.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs transition-all">
+              <Upload size={14} className="text-emerald-600" />
+              <span className="truncate">Upload</span>
               <input 
                 type="file" 
                 accept="image/*" 
@@ -235,16 +237,16 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
 
         {/* Receipt preview if attached */}
         {receiptImage && (
-          <div className="relative p-2 bg-slate-50 border border-slate-200 rounded-xl flex items-center space-x-3">
-            <img src={receiptImage} alt="Receipt Preview" className="w-12 h-12 object-cover rounded-lg border" />
+          <div className="relative p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center space-x-3">
+            <img src={receiptImage} alt="Receipt Preview" className="w-12 h-12 object-cover rounded-xl border border-slate-200" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-slate-800 truncate">Receipt Attached</p>
-              <p className="text-[10px] text-slate-500">Parsed successfully</p>
+              <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">Receipt Attached</p>
+              <p className="text-[10px] text-emerald-600 font-medium">Ready for recording</p>
             </div>
             <button
               type="button"
               onClick={() => setReceiptImage(null)}
-              className="p-1 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+              className="p-1.5 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-slate-700"
             >
               <X size={16} />
             </button>
@@ -254,14 +256,14 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
         {/* Type Selector */}
         <div>
           <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">Transaction Type</label>
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl">
             <button
               type="button"
               onClick={() => setType('expense')}
-              className={`py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
+              className={`py-2.5 px-3 rounded-xl text-sm font-bold transition-all ${
                 type === 'expense'
-                  ? 'bg-rose-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  ? 'bg-rose-600 text-white shadow-md'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 hover:bg-slate-200/60'
               }`}
             >
               Expense (-)
@@ -269,10 +271,10 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
             <button
               type="button"
               onClick={() => setType('income')}
-              className={`py-2 px-3 rounded-lg text-sm font-semibold transition-all ${
+              className={`py-2.5 px-3 rounded-xl text-sm font-bold transition-all ${
                 type === 'income'
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  ? 'bg-emerald-600 text-white shadow-md'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 hover:bg-slate-200/60'
               }`}
             >
               Income (+)
@@ -282,15 +284,15 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
 
         {/* Amount Input with Quick Chips */}
         <div>
-          <div className="flex items-center justify-between mb-1">
-            <label className="block text-sm font-medium text-slate-700">Amount (PKR)</label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Amount (PKR)</label>
             <div className="flex items-center space-x-1.5">
               {[100, 500, 1000, 5000].map(val => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => handleQuickAddAmount(val)}
-                  className="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 dark:text-slate-300 transition-colors"
                 >
                   +{val}
                 </button>
@@ -298,14 +300,14 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
             </div>
           </div>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 font-bold text-base">
+            <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500 dark:text-slate-400 font-extrabold text-base">
               Rs
             </span>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full pl-12 pr-4 py-2.5 text-lg font-bold border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-900"
+              className="w-full pl-12 pr-4 py-3 text-xl font-black border border-slate-300 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-900 dark:text-white bg-white dark:bg-slate-900"
               placeholder="0.00"
               required
               min="0.01"
@@ -316,13 +318,13 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
 
         {/* Description with AI Suggestion */}
         <div>
-          <div className="flex items-center justify-between mb-1">
-            <label htmlFor="tx-desc" className="block text-sm font-medium text-slate-700">Description</label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label htmlFor="tx-desc" className="block text-xs font-bold uppercase tracking-wider text-slate-500">Description</label>
             <button
               type="button"
               onClick={handleSuggestCategory}
               disabled={isSuggesting || !description.trim()}
-              className="flex items-center text-xs font-semibold text-emerald-600 hover:text-emerald-700 disabled:text-slate-400 space-x-1"
+              className="flex items-center text-xs font-bold text-emerald-600 hover:text-emerald-700 disabled:text-slate-400 space-x-1"
             >
               <Sparkles size={13} className={isSuggesting ? "animate-spin" : ""} />
               <span>{isSuggesting ? "Analyzing..." : "Auto-Categorize"}</span>
@@ -334,38 +336,38 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g. Grocery store, Fuel fill-up, Client payment"
-            className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
             required
           />
         </div>
 
-        {/* Category Selection with "+ New Category" button */}
-        <div>
-          <div className="flex items-center justify-between mb-1">
-            <label className="block text-sm font-medium text-slate-700">Category</label>
+        {/* Category Selection */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Category</label>
             <button
               type="button"
               onClick={() => setIsAddCategoryOpen(true)}
-              className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center space-x-1"
+              className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center space-x-1 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-xl"
             >
               <Plus size={13} />
-              <span>Add Category</span>
+              <span>New Category</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-36 overflow-y-auto p-1 border border-slate-200 rounded-xl bg-slate-50/50">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-44 overflow-y-auto p-2 border border-slate-200 dark:border-slate-700 rounded-2xl bg-slate-50/70 dark:bg-slate-800/50">
             {filteredCategories.map(cat => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setCategory(cat.name)}
-                className={`flex items-center space-x-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-left transition-all ${
+                className={`flex items-center space-x-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-left transition-all ${
                   category === cat.name
-                    ? 'bg-white shadow-sm ring-2 ring-emerald-500 text-slate-900 font-semibold'
-                    : 'hover:bg-white text-slate-600'
+                    ? 'bg-emerald-600 text-white shadow-md'
+                    : 'bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700/80'
                 }`}
               >
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
+                <span className="w-3 h-3 rounded-full flex-shrink-0 shadow-xs" style={{ backgroundColor: cat.color }} />
                 <span className="truncate">{cat.name}</span>
               </button>
             ))}
