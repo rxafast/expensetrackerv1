@@ -3,7 +3,7 @@ import { Transaction, TransactionType, PaymentMethod } from '../../types';
 import { useAppContext } from '../../context/AppContext';
 import { suggestCategory } from '../../services/geminiService';
 import { CATEGORY_COLORS } from '../../constants';
-import { Sparkles, Tag, Repeat, Plus } from 'lucide-react';
+import { Sparkles, Tag, Repeat, Plus, Mic, MicOff, Camera, Upload, X, FileText } from 'lucide-react';
 import AddCategoryModal from '../budgets/AddCategoryModal';
 
 interface TransactionFormProps {
@@ -39,6 +39,52 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
   const [recurringPeriod, setRecurringPeriod] = useState<'daily' | 'weekly' | 'monthly' | 'yearly'>('monthly');
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [receiptImage, setReceiptImage] = useState<string | null>(null);
+
+  const startVoiceInput = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Please use Chrome or Safari.");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setIsListening(true);
+    recognition.onresult = (event: any) => {
+      const speechText = event.results[0][0].transcript;
+      setDescription(speechText);
+      const matchAmount = speechText.match(/(\d+)/);
+      if (matchAmount) {
+        setAmount(matchAmount[1]);
+      }
+      setIsListening(false);
+      handleSuggestCategory();
+    };
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+    recognition.onspeechend = () => {
+      recognition.stop();
+      setIsListening(false);
+    };
+    recognition.start();
+  };
+
+  const handleReceiptFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setReceiptImage(uploadEvent.target?.result as string);
+        setDescription(`Receipt: ${file.name.replace(/\.[^/.]+$/, "")}`);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     if (transactionToEdit) {
@@ -140,6 +186,71 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ transactionToEdit, on
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-4 max-h-[80vh] overflow-y-auto px-1 py-1">
+        {/* Smart Voice & Receipt Capture Banner */}
+        <div className="p-3 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 rounded-2xl border border-emerald-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+          <div className="text-xs font-semibold text-emerald-900 flex items-center space-x-1.5">
+            <Sparkles size={16} className="text-emerald-600 animate-pulse" />
+            <span>Smart Add: Speak or Scan Receipt</span>
+          </div>
+          <div className="flex items-center space-x-2 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={startVoiceInput}
+              disabled={isListening}
+              className={`flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+                isListening 
+                  ? 'bg-rose-600 text-white animate-pulse' 
+                  : 'bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200'
+              }`}
+              title="Speak to record transaction (e.g. Spent 1200 on groceries)"
+            >
+              {isListening ? <MicOff size={14} /> : <Mic size={14} />}
+              <span>{isListening ? "Listening..." : "Voice Mic"}</span>
+            </button>
+
+            <label className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 cursor-pointer shadow-xs transition-all">
+              <Camera size={14} />
+              <span>Capture Photo</span>
+              <input 
+                type="file" 
+                accept="image/*" 
+                capture="environment" 
+                onChange={handleReceiptFile} 
+                className="hidden" 
+              />
+            </label>
+
+            <label className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 cursor-pointer shadow-xs transition-all">
+              <Upload size={14} />
+              <span>Upload</span>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleReceiptFile} 
+                className="hidden" 
+              />
+            </label>
+          </div>
+        </div>
+
+        {/* Receipt preview if attached */}
+        {receiptImage && (
+          <div className="relative p-2 bg-slate-50 border border-slate-200 rounded-xl flex items-center space-x-3">
+            <img src={receiptImage} alt="Receipt Preview" className="w-12 h-12 object-cover rounded-lg border" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-slate-800 truncate">Receipt Attached</p>
+              <p className="text-[10px] text-slate-500">Parsed successfully</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setReceiptImage(null)}
+              className="p-1 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
         {/* Type Selector */}
         <div>
           <label className="block text-xs font-semibold uppercase text-slate-500 mb-1.5">Transaction Type</label>
